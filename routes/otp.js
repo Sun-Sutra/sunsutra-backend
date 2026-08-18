@@ -42,10 +42,12 @@ router.post('/send', async (req, res) => {
   // Store in memory
   otpStore.set(email, { otp, expiresAt });
 
-  // DEV: Log the OTP to the console so the user can see it if email delivery is delayed
-  console.log(`\n=== DEV OTP FOR ${email} ===`);
-  console.log(`OTP Code: ${otp}`);
-  console.log(`===========================\n`);
+  // DEV ONLY: Log the OTP to the console for easier testing
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`\n=== DEV OTP FOR ${email} ===`);
+    console.log(`OTP Code: ${otp}`);
+    console.log(`===========================\n`);
+  }
 
   try {
     const transporter = getTransporter();
